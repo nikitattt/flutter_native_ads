@@ -7,7 +7,6 @@ import android.widget.TextView
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.formats.MediaView
 import com.google.android.gms.ads.formats.NativeAdOptions
 import com.google.android.gms.ads.formats.UnifiedNativeAd
 import com.google.android.gms.ads.formats.UnifiedNativeAdView
@@ -23,7 +22,6 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
     private val headlineView: TextView = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_headline", "id", hostPackageName))
     private val bodyView: TextView = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_body", "id", hostPackageName))
     private val callToActionView: TextView = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_call_to_action", "id", hostPackageName))
-    private val mediaView: MediaView = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_media", "id", hostPackageName))
 
     private val iconView: ImageView? = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_icon", "id", hostPackageName))
     private val starRatingView: TextView? = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_star", "id", hostPackageName))
@@ -90,7 +88,6 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
         headlineView.text = ad?.headline
         bodyView.text = ad?.body
         callToActionView.text = ad?.callToAction
-        mediaView.setMediaContent(ad?.mediaContent)
 
         iconView?.setImageDrawable(ad?.icon?.drawable)
         starRatingView?.text = "${ad?.starRating}"
@@ -101,7 +98,6 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
         unifiedNativeAdView.bodyView = bodyView
         unifiedNativeAdView.headlineView = headlineView
         unifiedNativeAdView.callToActionView = callToActionView
-        unifiedNativeAdView.mediaView = mediaView
 
         unifiedNativeAdView.iconView = iconView
         unifiedNativeAdView.starRatingView = starRatingView
