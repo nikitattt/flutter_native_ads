@@ -20,10 +20,10 @@ import com.google.ads.mediation.admob.AdMobAdapter
 
 
 
-class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arguments: HashMap<String, String>) : PlatformView {
+class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arguments: HashMap<String, Any>) : PlatformView {
 
-    private val hostPackageName = arguments["package_name"]
-    private val layoutRes = context.resources.getIdentifier(arguments["layout_name"], "layout", hostPackageName)
+    private val hostPackageName = arguments["package_name"].toString()
+    private val layoutRes = context.resources.getIdentifier(arguments["layout_name"].toString(), "layout", hostPackageName)
     private val unifiedNativeAdView: UnifiedNativeAdView = View.inflate(context, layoutRes, null) as UnifiedNativeAdView
     private val headlineView: TextView = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_headline", "id", hostPackageName))
     private val bodyView: TextView = unifiedNativeAdView.findViewById(context.resources.getIdentifier("flutter_native_ad_body", "id", hostPackageName))
@@ -40,13 +40,13 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
 
     init {
         unifiedNativeAdView.findViewById<TextView>(context.resources.getIdentifier("flutter_native_ad_attribution", "id", hostPackageName)).apply {
-            this.text = arguments["text_attribution"]
+            this.text = arguments["text_attribution"].toString()
         }
 
         val extras = Bundle()
         extras.putString("npa", "1")
 
-        AdLoader.Builder(context, arguments["placement_id"])
+        AdLoader.Builder(context, arguments["placement_id"].toString())
                 .forUnifiedNativeAd {
                     ad = it
                     ensureUnifiedAd(it)
@@ -81,7 +81,7 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
                         .build())
                 .build()
                 .loadAd(
-                        if (arguments["non_personalized"] == "true") AdRequest.Builder()
+                        if (arguments["non_personalized"] == true) AdRequest.Builder()
                                 .addNetworkExtrasBundle(AdMobAdapter::class.java, extras)
                                 .build()
                         else AdRequest.Builder()
