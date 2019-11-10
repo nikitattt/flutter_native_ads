@@ -81,7 +81,7 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
                         .build())
                 .build()
                 .loadAd(
-                        if (arguments["non_personalized"] == true) AdRequest.Builder()
+                        if (arguments["personalized"] == false) AdRequest.Builder()
                                 .addNetworkExtrasBundle(AdMobAdapter::class.java, extras)
                                 .build()
                         else AdRequest.Builder()

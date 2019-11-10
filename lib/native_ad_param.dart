@@ -11,7 +11,7 @@ class AndroidParam {
       'package_name': packageName,
       'layout_name': layoutName,
       'text_attribution': attributionText,
-      'non_personalized': personalized
+      'personalized': personalized
     };
   }
 }
