@@ -13,6 +13,12 @@ import com.google.android.gms.ads.formats.UnifiedNativeAdView
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
+import android.os.Bundle
+import com.google.ads.mediation.admob.AdMobAdapter
+
+
+
+
 
 class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arguments: HashMap<String, String>) : PlatformView {
 
@@ -36,6 +42,10 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
         unifiedNativeAdView.findViewById<TextView>(context.resources.getIdentifier("flutter_native_ad_attribution", "id", hostPackageName)).apply {
             this.text = arguments["text_attribution"]
         }
+
+        val extras = Bundle()
+        extras.putString("npa", "1")
+
         AdLoader.Builder(context, arguments["placement_id"])
                 .forUnifiedNativeAd {
                     ad = it
@@ -70,8 +80,12 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
                 .withNativeAdOptions(NativeAdOptions.Builder()
                         .build())
                 .build()
-                .loadAd(AdRequest.Builder()
-                        .build())
+                .loadAd(
+                        if (arguments["non_personalized"] == "true") AdRequest.Builder()
+                                .addNetworkExtrasBundle(AdMobAdapter::class.java, extras)
+                                .build()
+                        else AdRequest.Builder()
+                                .build())
     }
 
     override fun getView(): View {

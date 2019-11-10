@@ -3,6 +3,7 @@ class AndroidParam {
   String packageName;
   String layoutName;
   String attributionText;
+  String personalized;
 
   dynamic toMap() {
     return <String, String>{
@@ -10,6 +11,7 @@ class AndroidParam {
       'package_name': packageName,
       'layout_name': layoutName,
       'text_attribution': attributionText,
+      'non_personalized': personalized
     };
   }
 }
