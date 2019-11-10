@@ -3,10 +3,10 @@ class AndroidParam {
   String packageName;
   String layoutName;
   String attributionText;
-  String personalized;
+  bool personalized;
 
   dynamic toMap() {
-    return <String, String>{
+    return <String, dynamic>{
       'placement_id': placementId,
       'package_name': packageName,
       'layout_name': layoutName,
