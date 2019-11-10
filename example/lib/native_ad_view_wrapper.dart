@@ -26,7 +26,7 @@ class NativeAdViewWrapperState extends State<NativeAdViewWrapper>
         ..packageName = "sakebook.github.com.native_ads_example"
         ..layoutName = "native_ad_layout"
         ..attributionText = "AD"
-        ..personalized = true,
+        ..personalized = "true",
       iosParam: IOSParam()
         ..placementId = "ca-app-pub-3940256099942544/3986624511" // test
         ..bundleId = "sakebook.github.com.nativeAdsExample"
