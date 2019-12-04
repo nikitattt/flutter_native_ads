@@ -17,17 +17,10 @@ import io.flutter.plugin.platform.PlatformView
 import android.os.Bundle
 import com.google.ads.mediation.admob.AdMobAdapter
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
-import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-
-
-
-
-
-
-
 
 
 class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arguments: HashMap<String, Any>) : PlatformView {
@@ -115,7 +108,7 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
 
         val roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(
                 Resources.getSystem(),
-                (ad?.icon?.drawable as BitmapDrawable).bitmap
+                drawableToBitmap(ad?.icon?.drawable)
         )
 
         roundedBitmapDrawable.cornerRadius = 45.0f
@@ -138,5 +131,29 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
         unifiedNativeAdView.advertiserView = advertiserView
 
         unifiedNativeAdView.setNativeAd(ad)
+    }
+
+    private fun drawableToBitmap(drawable: Drawable?): Bitmap? {
+        val bitmap: Bitmap = if (drawable?.intrinsicWidth!! <= 0
+                || drawable?.intrinsicHeight <= 0) {
+            Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+        } else {
+            Bitmap.createBitmap(
+                    drawable.intrinsicWidth,
+                    drawable.intrinsicHeight,
+                    Bitmap.Config.ARGB_8888
+            )
+        }
+
+        if (drawable is BitmapDrawable) {
+            if (drawable.bitmap != null) {
+                return drawable.bitmap
+            }
+        }
+
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
     }
 }
