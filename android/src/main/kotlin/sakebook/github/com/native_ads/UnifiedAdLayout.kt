@@ -108,7 +108,7 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
 
         val roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(
                 Resources.getSystem(),
-                drawableToBitmap(ad?.icon?.drawable)
+                ad?.icon?.drawable?.toBitmap()
         )
 
         roundedBitmapDrawable.cornerRadius = 45.0f
@@ -133,27 +133,20 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
         unifiedNativeAdView.setNativeAd(ad)
     }
 
-    private fun drawableToBitmap(drawable: Drawable?): Bitmap? {
-        val bitmap: Bitmap = if (drawable?.intrinsicWidth!! <= 0
-                || drawable?.intrinsicHeight <= 0) {
-            Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-        } else {
-            Bitmap.createBitmap(
-                    drawable.intrinsicWidth,
-                    drawable.intrinsicHeight,
-                    Bitmap.Config.ARGB_8888
-            )
+    private fun Drawable.toBitmap(): Bitmap {
+        if (this is BitmapDrawable) {
+            return bitmap
         }
 
-        if (drawable is BitmapDrawable) {
-            if (drawable.bitmap != null) {
-                return drawable.bitmap
-            }
-        }
+        val width = if (bounds.isEmpty) intrinsicWidth else bounds.width()
+        val height = if (bounds.isEmpty) intrinsicHeight else bounds.height()
 
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-        return bitmap
+        return Bitmap.createBitmap(width.nonZero(), height.nonZero(), Bitmap.Config.ARGB_8888).also {
+            val canvas = Canvas(it)
+            setBounds(0, 0, canvas.width, canvas.height)
+            draw(canvas)
+        }
     }
+
+    private fun Int.nonZero() = if (this <= 0) 1 else this
 }
