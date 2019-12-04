@@ -1,6 +1,7 @@
 package sakebook.github.com.native_ads
 
 import android.content.Context
+import android.content.res.Resources
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,6 +16,15 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 import android.os.Bundle
 import com.google.ads.mediation.admob.AdMobAdapter
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.core.graphics.drawable.RoundedBitmapDrawable
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+
+
+
+
 
 
 
@@ -103,7 +113,15 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
         bodyView.text = ad?.body
         callToActionView.text = ad?.callToAction
 
-        iconView?.setImageDrawable(ad?.icon?.drawable)
+        val roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(
+                Resources.getSystem(),
+                (ad?.icon?.drawable as BitmapDrawable).bitmap
+        )
+
+        roundedBitmapDrawable.cornerRadius = 45.0f
+        roundedBitmapDrawable.setAntiAlias(true)
+
+        iconView?.setImageDrawable(roundedBitmapDrawable)
         starRatingView?.text = "${ad?.starRating}"
         storeView?.text = ad?.store
         priceView?.text = ad?.price
