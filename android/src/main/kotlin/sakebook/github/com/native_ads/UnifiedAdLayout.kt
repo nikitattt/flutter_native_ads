@@ -111,7 +111,7 @@ class UnifiedAdLayout(context: Context, messenger: BinaryMessenger, id: Int, arg
                 ad?.icon?.drawable?.toBitmap()
         )
 
-        roundedBitmapDrawable.cornerRadius = 45.0f
+        roundedBitmapDrawable.cornerRadius = 95.0f
         roundedBitmapDrawable.setAntiAlias(true)
 
         iconView?.setImageDrawable(roundedBitmapDrawable)
